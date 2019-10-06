@@ -1,0 +1,100 @@
+* Terminal
+** Fish_term_key
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd  "<C-return>") 'term )
+#+END_SRC
+
+* Aesthetics
+** Bullets_Org_mode
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+       :ensure t
+       :config
+       (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+#+END_SRC
+** Easy_see
+#+BEGIN_SRC emacs-lisp
+(use-package beacon
+  :ensure t
+  :init
+  (beacon-mode 1))
+
+(when window-system (global-hl-line-mode t))
+(when window-system (global-prettify-symbols-mode t))
+
+#+END_SRC
+** Startup
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+
+(tool-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+#+END_SRC
+* Easy_Peezey
+** Which_key
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (which-key-mode))
+#+END_SRC
+** Yay_Nay
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+** Brackets
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+				(?\( . ?\))
+				(?\" . ?\")
+				))
+
+  (add-hook 'org-mode-hook 'electric-pair-mode)
+  (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
+  (show-paren-mode)
+#+END_SRC
+** Scroll
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 100)
+#+END_SRC
+** Backup_Save
+#+BEGIN_SRC emacs-lisp
+(setq make-backupfile nil)
+(setq auto-save-default nil)
+#+END_SRC
+** Bell
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+* IDO
+** Enable_mode
+#+BEGIN_SRC emacs-lisp
+  (setq idoenable-flex-matching nil)
+  (setq ido-create-new-buffer 'always)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+#+END_SRC
+** Vertical
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (ido-vertical-mode 1))
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+#+END_SRC
+** Smex
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t
+    :init (smex-initialize)
+    :bind
+    ("M-x" . smex))
+#+END_SRC
+** Enable_switch_buffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x b") 'ibuffer)
+  (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
+#+END_SRC
+
