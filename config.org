@@ -1,18 +1,27 @@
 * Terminal
-** Fish_term_key
+** fish_term_key
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd  "<C-return>") 'term )
 #+END_SRC
 
 * Aesthetics
-** Bullets_Org_mode
+** startup
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+
+(tool-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+#+END_SRC
+** bullets_org_mode
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
        :ensure t
        :config
        (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
-** Easy_see
+** easy_see
 #+BEGIN_SRC emacs-lisp
 (use-package beacon
   :ensure t
@@ -23,94 +32,19 @@
 (when window-system (global-prettify-symbols-mode t))
 
 #+END_SRC
-** Startup
+** indents
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-
-(tool-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+(setq highlight-indent-guides-method 'character)
+(setq highlight-indent-guides-auto-odd-face-perc 15)
+(setq highlight-indent-guides-auto-even-face-perc 15)
+(setq highlight-indent-guides-auto-character-face-perc 20)
 #+END_SRC
-* Easy_Peezey
-** Which_key
+** line_numbers
 #+BEGIN_SRC emacs-lisp
-  (use-package which-key
-    :ensure t
-    :init
-    (which-key-mode))
+(add-hook 'prog-mode-hook 'linum-mode)
 #+END_SRC
-** Yay_Nay
-#+BEGIN_SRC emacs-lisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-** Brackets
-#+BEGIN_SRC emacs-lisp
-  (setq electric-pair-pairs '(
-				(?\( . ?\))
-				(?\" . ?\")
-				))
-
-  (add-hook 'org-mode-hook 'electric-pair-mode)
-  (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
-  (show-paren-mode)
-#+END_SRC
-** Scroll
-#+BEGIN_SRC emacs-lisp
-  (setq scroll-conservatively 100)
-#+END_SRC
-** Backup_Save
-#+BEGIN_SRC emacs-lisp
-(setq make-backupfile nil)
-(setq auto-save-default nil)
-#+END_SRC
-** Bell
-#+BEGIN_SRC emacs-lisp
-(setq ring-bell-function 'ignore)
-#+END_SRC
-** Keybinding
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-3") (lambda () (interactive) (insert "#")))
-#+END_SRC
-* IDO
-** Enable_mode
-#+BEGIN_SRC emacs-lisp
-  (setq idoenable-flex-matching nil)
-  (setq ido-create-new-buffer 'always)
-  (setq ido-everywhere t)
-  (ido-mode 1)
-#+END_SRC
-** Vertical
-#+BEGIN_SRC emacs-lisp
-  (use-package ido-vertical-mode
-    :ensure t
-    :init
-    (ido-vertical-mode 1))
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-#+END_SRC
-** Smex
-#+BEGIN_SRC emacs-lisp
-  (use-package smex
-    :ensure t
-    :init (smex-initialize)
-    :bind
-    ("M-x" . smex))
-#+END_SRC
-** Enable_switch_buffer
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x b") 'ibuffer)
-  (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
-#+END_SRC
-
-* Yassnippet
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path
-		"~/.emacs.d/plugins/yasnippet")
-  (require 'yasnippet)
-  (yas-global-mode 1)
-  (global-set-key (kbd "M-z") 'tab-indent-or-complete)
-#+END_SRC
-* Doom_modeline
+** doom_modeline
 #+BEGIN_SRC emacs-lisp
 (use-package doom-modeline
       :ensure t
@@ -237,9 +171,50 @@
 ;; Hooks that run before/after the modeline version string is updated
 (setq doom-modeline-before-update-env-hook nil)
 (setq doom-modeline-after-update-env-hook nil)
-
 #+END_SRC
-* Config_visit
+** aggressive_indent_mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+(add-hook 'css-mode-hook #'aggressive-indent-mode)
+(add-hook 'python-mode-hook #'aggressive-indent-mode)
+#+END_SRC
+* Easy_Peezey
+** which_key
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (which-key-mode))
+#+END_SRC
+** yay_nay
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+** brackets
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+				(?\( . ?\))
+				(?\" . ?\")
+				))
+
+  (add-hook 'org-mode-hook 'electric-pair-mode)
+  (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
+  (show-paren-mode)
+#+END_SRC
+** scroll
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 100)
+#+END_SRC
+** backup_save
+#+BEGIN_SRC emacs-lisp
+(setq make-backupfile nil)
+(setq auto-save-default nil)
+#+END_SRC
+** bell
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+** config_visit
 #+BEGIN_SRC emacs-lisp
   (defun config-visit()
       "Opens up the configuration file on the stroke of =C-c e=
@@ -248,4 +223,117 @@
     (find-file "~/.emacs.d/config.org"))
 
   (global-set-key (kbd "C-c e") (function config-visit))
+#+END_SRC
+** keybinding
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-3") (lambda () (interactive) (insert "#")))
+#+END_SRC
+** python_keybinding
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'python-mode-hook
+	    (lambda ()
+	      (define-key python-mode-map (kbd "C-. c") #'comment-or-uncomment-region)))
+#+END_SRC
+** free_keys
+#+BEGIN_SRC emacs-lisp
+(bind-key "C-h C-k" 'free-keys)
+#+END_SRC
+** dumb_jump
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+  :bind (("C-. o" . dumb-jump-go-other-window)
+         ("C-. j" . dumb-jump-go)
+         ("C-. b" . dumb-jump-back)
+         ("C-. i" . dumb-jump-go-prompt)
+         ("C-. x" . dumb-jump-go-prefer-external)
+         ("C-. z" . dumb-jump-go-prefer-external-other-window))
+  :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+  :ensure)
+#+END_SRC
+** config_visit
+#+BEGIN_SRC emacs-lisp
+  (defun config-visit()
+      "Opens up the configuration file on the stroke of =C-c e=
+  "
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+
+  (global-set-key (kbd "C-c e") (function config-visit))
+#+END_SRC
+** auto_complete
+#+BEGIN_SRC emacs-lisp
+(ac-config-default)
+#+END_SRC
+** iedit
+#+BEGIN_SRC emacs-lisp
+(require 'iedit)
+#+END_SRC
+** yassnippet
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+    :ensure t
+    :init
+    (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
+    (add-hook 'LaTeX-mode-hook 'yas-minor-mode)
+    (add-hook 'python-mode-hook 'yas-minor-mode)
+    (add-hook 'org-mode-hook 'yas-minor-mode)
+    (add-hook 'c++-mode-hook 'yas-minor-mode)
+    (add-hook 'shell-mode-hook 'yas-minor-mode)
+    (add-hook 'rust-mode-hook 'yas-minor-mode)
+    (add-hook 'markdown-mode-hook 'yas-minor-mode)
+
+    (use-package yasnippet-snippets ;the snippets file
+      :ensure t)
+
+    (yas-reload-all))
+#+END_SRC
+* IDO
+** enable_mode
+#+BEGIN_SRC emacs-lisp
+  (setq idoenable-flex-matching nil)
+  (setq ido-create-new-buffer 'always)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+#+END_SRC
+** vertical
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (ido-vertical-mode 1))
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+#+END_SRC
+** smex
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t
+    :init (smex-initialize)
+    :bind
+    ("M-x" . smex))
+#+END_SRC
+** enable_switch_buffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x b") 'ibuffer)
+  (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
+#+END_SRC
+
+* To_do_list
+#+BEGIN_SRC emacs-lisp
+  ;; set key for agenda
+  (global-set-key (kbd "C-c a") 'org-agenda)
+
+  (setq org-agenda-files (quote ("/Users/ivan/Google Drive/to_do.org")))
+
+  ;;set priority range from A to C with default A
+  (setq org-highest-priority ?A)
+  (setq org-lowest-priority ?C)
+  (setq org-default-priority ?A)
+
+  ;;set colours for priorities
+  (setq org-priority-faces '((?A . (:foreground "#F0DFAF" :weight bold))
+			     (?B . (:foreground "LightSteelBlue"))
+			     (?C . (:foreground "OliveDrab"))))
+
+  ;;open agenda in current window
+  (setq org-agenda-window-setup (quote current-window))
 #+END_SRC

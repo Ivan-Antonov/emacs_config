@@ -31,7 +31,7 @@
     ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(package-selected-packages
    (quote
-    (doom-modeline magithub magit yasnippet-snippets yasnippet smex ido-vertical-mode ideo-vertical-mode org-bullets beacon spacemacs-theme which-key use-package usepackage))))
+    (iedit auto-yasnippet auto-complete aggressive-indent free-keys dumb-jump highlight-indent-guides doom-modeline magithub magit yasnippet-snippets yasnippet smex ido-vertical-mode ideo-vertical-mode org-bullets beacon spacemacs-theme which-key use-package usepackage))))
 (global-set-key (kbd "C-x g") 'magit-status)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
