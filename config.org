@@ -1,9 +1,9 @@
 * Terminal
-** fish_term_key
+** term key
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd  "<C-return>") 'term )
+(global-set-key (kbd  "C-. t") 'term )
+(defvar my-term-shell "/bin/zsh")
 #+END_SRC
-
 * Aesthetics
 ** startup
 #+BEGIN_SRC emacs-lisp
@@ -176,9 +176,41 @@
 #+BEGIN_SRC emacs-lisp
 (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 (add-hook 'css-mode-hook #'aggressive-indent-mode)
-(add-hook 'python-mode-hook #'aggressive-indent-mode)
 #+END_SRC
 * Easy_Peezey
+** window navigation
+   #+BEGIN_SRC emacs-lisp
+     (use-package switch-window
+       :ensure t
+       :config
+       (setq switch-window-input-style 'minibuffer)
+       (setq switch-window-increase 8)
+       (setq switch-window-threshold 2)
+       (setq switch-window-shortcut-style 'qwerty) 
+       (setq switch-window-qwerty-shortcuts
+	     '("a" "s" "d" "f" "g" "h" "j"))
+       :bind
+       ([remap other-window] . switch-window))
+
+     (global-set-key (kbd "s-o") (function switch-window))
+   #+END_SRC
+** searching
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    :diminish
+    (ivy-mode)
+    :init
+    (ivy-mode 1)
+    :config
+    (setq ivy-use-virtual-buffers t
+	  ivy-count-format "%d/%d "))
+
+  (use-package swiper
+    :ensure t
+    :config
+    (global-set-key (kbd "C-s") 'swiper))
+#+END_SRC
 ** which_key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
@@ -234,6 +266,10 @@
 	    (lambda ()
 	      (define-key python-mode-map (kbd "C-. c") #'comment-or-uncomment-region)))
 #+END_SRC
+** keybindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-. c") 'comment-or-uncomment-region)
+#+END_SRC
 ** free_keys
 #+BEGIN_SRC emacs-lisp
 (bind-key "C-h C-k" 'free-keys)
@@ -267,6 +303,10 @@
 ** iedit
 #+BEGIN_SRC emacs-lisp
 (require 'iedit)
+(use-package iedit
+    :ensure t
+    :config
+    (global-set-key (kbd "C-:") (function iedit-mode)))
 #+END_SRC
 ** yassnippet
 #+BEGIN_SRC emacs-lisp
@@ -287,6 +327,51 @@
 
     (yas-reload-all))
 #+END_SRC
+** Ibuffer
+   #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x b") 'ibuffer)
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+               ("⍫ Magit" (or
+                           (name . "^.*gitignore$")
+                           (name . "^magit.*$")))
+               ("⚙ Rust" (or
+                           (mode . rust-mode)))
+               ("ᛔ Jupyter" (or
+                             (mode . "ein:notebooklist-mode")
+                             (name . "\\*ein:.*")
+                             ))
+               ("ᛥ Dired" (mode . dired-mode))
+               ("ᚧ Python" (or
+                            (mode . python-mode)
+                            (mode . inferior-python-mode)
+                            (name . "^\\*Python Doc\\*$")
+                            (name . "^matplotlibrc$")
+                            (name . "^.*mplstyle$")
+                            (name . "^\\*Flycheck error messages\\*$")))
+               ("ᛋᛋ Latex" (or
+                            (name . "^.*tex$")
+                            (name . "^.*bib$")
+                            (name . "^.*log$")
+                            (name . "\\*RefTeX Select\\*")
+                            (name . "^\\*toc\\*$")
+                            (mode . comint-mode)))
+               ("ᚸ Org" (name . "\\.org"))
+               ("⚓ Shell" (name . "\\.sh"))
+               ("෴ PDF" (name . "\\.pdf"))
+               ("卍 Config" (name . "^\\..*$"))
+               ("ᛓ Elfeed" (or
+                            (name . "\\*elfeed.*\\*")
+                            (name . "^ef.*$")))
+               ))))
+
+(defun kill-matching-buffers-no-ask ()
+  (interactive)
+  (cl-letf (((symbol-function 'kill-buffer-ask) #'kill-buffer))
+    (call-interactively #'kill-matching-buffers)))
+
+(global-set-key (kbd  "C-. k") 'kill-matching-buffers-no-ask )
+   #+END_SRC
 * IDO
 ** enable_mode
 #+BEGIN_SRC emacs-lisp
@@ -319,7 +404,7 @@
 
 * To_do_list
 #+BEGIN_SRC emacs-lisp
-  ;; set key for agenda
+  ;;set key for agenda
   (global-set-key (kbd "C-c a") 'org-agenda)
 
   (setq org-agenda-files (quote ("/Users/ivan/Google Drive/to_do.org")))
@@ -334,6 +419,26 @@
 			     (?B . (:foreground "LightSteelBlue"))
 			     (?C . (:foreground "OliveDrab"))))
 
+  ;;keywords
+  (setq org-todo-keywords '((sequence "TODO(t)" "IMPORTANT(i)" "URGENT(u)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-todo-keyword-faces
+        '(("TODO" :foreground "#9f7efe" :weight normal :underline t)
+          ("URGENT" :foreground "#ff6480" :weight normal :underline t)
+          ("IMPORTANT" :foreground "#0098dd" :weight normal :underline t)
+          ("DONE" :foreground "#50a14f" :weight normal :underline t)
+          ("CANCELLED" :foreground "#7c7c75" :weight normal :underline t)))
+
   ;;open agenda in current window
   (setq org-agenda-window-setup (quote current-window))
+#+END_SRC
+
+* Projectile
+(define-key projectile-mode-map (kbd "s-,") 'projectile-command-map)
+* Magit
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+   :if (memq window-system '(mac ns))
+   :ensure t
+   :config
+   (exec-path-from-shell-initialize))
 #+END_SRC
