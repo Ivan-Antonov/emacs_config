@@ -33,7 +33,7 @@ nerd-icons-install-fonts and all-theicons-install-fonts
 ;;(setq doom-theme 'doom-earl-grey)
 ;;(setq doom-theme 'doom-homage-white)
 ;;(setq doom-theme 'whiteboard)
-(setq doom-theme 'doom-shades-of-purple)
+(setq doom-theme 'light-blue)
 ;;(setq doom-theme 'doom-molokai)
 #+END_SRC
 
@@ -75,3 +75,15 @@ nerd-icons-install-fonts and all-theicons-install-fonts
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 #+END_SRC
+* Github CoPilot
+
+#+begin_src emacs-lisp
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+#+end_src

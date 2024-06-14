@@ -25,6 +25,10 @@
 (package! beacon) ;; pretty fade of line -> ricing.org
 (package! ox-reveal)
 (package! ox-twbs)
+
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist"))) ;; install github co pilot
+
 ;;(package! vue-mode)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
