@@ -1,0 +1,80 @@
+* Clojure Snippets
+#+begin_src emacs-lisp :tangle yes
+;; (after! clojure-mode
+;;   (add-hook 'clojure-mode-hook #'paredit-mode)
+;;   (define-key paredit-mode-map (kbd "M-(") 'paredit-open-round)   ;; Example of custom keybinding
+;;   (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
+
+(use-package! cider
+  :bind (:map cider-mode-map
+              ("C-c C-;" . cider-pprint-eval-last-sexp-to-comment))
+  :custom
+  (cider-mode-line-show-connection nil)
+  (cider-repl-display-help-banner nil)
+  (nrepl-repl-buffer-name-template "*cider-repl %s(%r:%S)*")
+  (cider-session-name-template "%j:%H:%p")
+  (nrepl-sync-request-timeout 30)
+  (cider-repl-buffer-size-limit 100000)
+  (cider-repl-pop-to-buffer-on-connect 'display-only)
+  (cider-auto-select-error-buffer t)
+  (cider-show-error-buffer t)
+  (cider-debug-display-locals nil)
+  (cider-debug-prompt 'overlay)
+  (cider-eval-spinner-type 'progress-bar)
+  :config
+  (add-hook 'cider-disconnected-hook
+            (lambda () (rename-buffer
+                        (concat "*"
+                                "[DEAD] "
+                                (substring (buffer-name) 1))
+                        t)))
+
+  (define-clojure-indent
+   (defroutes 'defun)
+   (jdbc.core/atomic 1)
+   (>defn 'defun)
+   (>defn- 'defun)
+   (forM 'defun)
+   (GET 2)
+   (POST 2)
+   (PUT 2)
+   (DELETE 2)
+   (HEAD 2)
+   (ANY 2)
+   (OPTIONS 2)
+   (PATCH 2)
+   (rfn 2)
+   (let-routes 1)
+   (context 2)))
+
+;; Quick Peek
+(use-package! quick-peek
+  :commands quick-peek-show quick-peek-hide)
+
+;; Clj Refactor
+(use-package! clj-refactor
+  :hook (clojure-mode . clj-refactor-mode)
+  :bind(:map clj-refactor-map
+             ("C-c r" . clj-refactor-mode-hydra/body)))
+
+;; Clojure Snippets
+(use-package! clojure-snippets
+  :after clojure-mode)
+
+(add-hook 'clojure-mode-hook #'paredit-mode)
+(with-eval-after-load 'paredit
+  (define-key paredit-mode-map (kbd "C-.") #'paredit-forward)
+  (define-key paredit-mode-map (kbd "C-,") #'paredit-backward)
+  (define-key paredit-mode-map (kbd "C-/ s") #'paredit-split-sexp)
+  (define-key paredit-mode-map (kbd "C-/ j") #'paredit-join-sexps)
+  (define-key paredit-mode-map (kbd "C-/ j") #'paredit-join-sexps)
+  (define-key paredit-mode-map (kbd "C-/ [") #'paredit-forward-barf-sexp)
+  (define-key paredit-mode-map (kbd "C-/ ]") #'paredit-forward-slurp-sexp)
+  (define-key paredit-mode-map (kbd "C-/ =") #'paredit-forward-barf-sexp)
+  (define-key paredit-mode-map (kbd "C-/ -") #'paredit-backward-barf-sexp)
+  (define-key paredit-mode-map (kbd "C-/ c") #'paredit-convolute-sexp)
+  (define-key paredit-mode-map (kbd "C-/ r") #'paredit-raise-sexp)
+  (define-key paredit-mode-map (kbd "C-/ k") #'paredit-splice-sexp)
+  (define-key paredit-mode-map (kbd "C-/ w") #'paredit-wrap-round)
+ )
+#+end_src

@@ -26,8 +26,15 @@
 (package! ox-reveal)
 (package! ox-twbs)
 
+(package! cider)
+(package! clj-refactor)
+(package! clojure-snippets)
+(package! quick-peek)
+
 (package! copilot
-  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist"))) ;; install github co pilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+
+(package! gptel)
 
 ;;(package! vue-mode)
 

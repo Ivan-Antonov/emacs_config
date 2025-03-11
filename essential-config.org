@@ -47,8 +47,6 @@ Access to my custom keymap space on =C-z= or =C-\=
  #+END_SRC
 * Keymap: symbols
 #+BEGIN_SRC emacs-lisp
-  (define-key key-translation-map (kbd "C-x 8 h") (kbd "卍")) ; naughty
-  (define-key key-translation-map (kbd "C-x 8 C") (kbd "☭")) ; erm, kinda naughty
   (define-key key-translation-map (kbd "C-x 8 e") (kbd "🐘"))
   (define-key key-translation-map (kbd "C-x 8 p") (kbd "π"))
   (define-key key-translation-map (kbd "C-x 8 s") (kbd "🦑"))
@@ -211,11 +209,11 @@ If FRAME is a frame, it is returned."
  #+END_SRC
 ** =my/strings/recursive-count=                                      :regex:
 #+BEGIN_SRC emacs-lisp
-  (defun my/strings/recursive-count (regex string start)
-    "Count number of matches in string eggining from 'start' offset"
-    (if (string-match regex string start)
-        (+ 1 (my/strings/recursive-count regex string (match-end 0)))
-      0))
+  ;; (defun my/strings/recursive-count (regex string start)
+  ;;   "Count number of matches in string eggining from 'start' offset"
+  ;;   (if (string-match regex string start)
+  ;;       (+ 1 (my/strings/recursive-count regex string (match-end 0)))
+  ;;     0))
  #+END_SRC
 ** =my/extract-string=
 #+BEGIN_SRC emacs-lisp
@@ -231,18 +229,18 @@ If FRAME is a frame, it is returned."
  #+END_SRC
 ** =my/figlet=
 #+BEGIN_SRC emacs-lisp
-  (defun my/figlet (string-to-convert)
-    "Converts 'string-to-convert' to ascii art and inserts it into buffer
+  ;; (defun my/figlet (string-to-convert)
+  ;;   "Converts 'string-to-convert' to ascii art and inserts it into buffer
 
-      string-to-convert:	string to turn to art
-      "
-    (interactive "sString to make into art: ")
-    (let* ((ascii-art (shell-command-to-string (concat "figlet -k" " " string-to-convert))))
-      (setq ascii-art (replace-regexp-in-string "^"
-                                                comment-start
-                                                ascii-art))
-      (insert ascii-art)
-      ))
+  ;;     string-to-convert:	string to turn to art
+  ;;     "
+  ;;   (interactive "sString to make into art: ")
+  ;;   (let* ((ascii-art (shell-command-to-string (concat "figlet -k" " " string-to-convert))))
+  ;;     (setq ascii-art (replace-regexp-in-string "^"
+  ;;                                               comment-start
+  ;;                                               ascii-art))
+  ;;     (insert ascii-art)
+  ;;     ))
  #+END_SRC
 ** =my/file-name-from-line=
 #+BEGIN_SRC emacs-lisp
